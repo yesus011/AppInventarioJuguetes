@@ -64,6 +64,36 @@ Y verás el siguiente mensaje:
 Cada entorno de Github Codespace tendrá **su propia base de datos**, por lo que si estás trabajando con más personas, cada uno tendrá una base de datos diferente y diferentes registros dentro de ella. Estos datos **se perderán**, así que no pases demasiado tiempo creando registros manualmente para pruebas, en su lugar, puedes automatizar la adición de registros a tu base de datos editando el archivo ```commands.py``` dentro de la carpeta ```/src/api```. Edita la línea 32 de la función ```insert_test_data``` para insertar los datos según tu modelo (usa la función ```insert_test_users``` anterior como ejemplo). Luego, todo lo que necesitas hacer es ejecutar ```pipenv run insert-test-data```.
 
 ### Instalación manual del Front-End:
+## Aplicación de inventario
+
+El proyecto incluye un frontend React con rutas protegidas y una API Flask con JWT. El backend es la autoridad para roles y permisos; no se debe confiar en las protecciones visuales del navegador.
+
+### Puesta en marcha
+
+1. Copia `.env.example` a `.env` y configura `DATABASE_URL`, `JWT_SECRET_KEY` (una clave aleatoria de al menos 32 bytes) y `ADMIN_PASSWORD` (mínimo 8 caracteres). Para usar la contraseña inicial indicada, configúrala solo en tu `.env` local; no está guardada en el repositorio. El correo inicial es `jbolivar@cvidalsa27.com`.
+2. Instala las dependencias de Python y JavaScript: `pipenv install` y `npm install`.
+3. Aplica la migración: `pipenv run flask --app src/app.py db upgrade`.
+4. Crea o actualiza la cuenta administradora: `pipenv run flask --app src/app.py seed-admin`.
+5. Inicia el backend con `pipenv run start` y, en otra terminal, el frontend con `npm run start`.
+
+En desarrollo, Vite reenvía `/api` a `http://localhost:3001`. En otro despliegue, define `VITE_BACKEND_URL` como la URL base de la API. El JWT del frontend se conserva en `sessionStorage` durante la pestaña actual; para despliegues con requisitos de seguridad más estrictos, conviene migrar a cookies `HttpOnly` y protección CSRF.
+
+### Estructura principal
+
+```text
+src/api/models.py                 Usuario, artículo y salida
+src/api/routes.py                 Registro, login, administración e inventario
+src/api/commands.py               Comando seed-admin
+migrations/versions/              Esquema versionado
+src/front/context/AuthContext.jsx Sesión JWT compartida
+src/front/components/             Navegación y rutas protegidas
+src/front/pages/                  Login, registro, administración e inventario
+src/front/lib/api.js              Cliente HTTP con bearer token
+```
+
+Los registros públicos quedan pendientes hasta que el administrador los apruebe. Los artículos guardan descripción, marca, tipo de juguete, edad recomendada, observaciones, cantidad, URL de foto y condición. El catálogo se puede filtrar por marca, tipo y edad. Cada salida registra destino, fecha, cantidad y observaciones, descontándola en la misma transacción de base de datos. Desde el historial se puede imprimir una planilla vertical por salida con espacios para las firmas de entrega y recepción.
+
+### Instalación manual del Front-End:
 
 -   Asegúrate de estar usando la versión 20 de node y de que ya hayas instalado y ejecutado correctamente el backend.
 

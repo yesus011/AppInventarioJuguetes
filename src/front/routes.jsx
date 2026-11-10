@@ -4,11 +4,15 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
+  Navigate,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { Admin } from "./pages/Admin";
+import { Inventory } from "./pages/Inventory";
+import { ManageInventory } from "./pages/ManageInventory";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -19,12 +23,19 @@ export const router = createBrowserRouter(
     // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
 
       // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
+      <Route path="/" element={<Layout />} errorElement={<h1>No encontramos esta página.</h1>}>
+        <Route index element={<Navigate to="/inventory" replace />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="inventory" element={<Inventory />} />
+          <Route element={<ProtectedRoute allowedRoles={["admin", "user"]} />}>
+            <Route path="inventory/manage" element={<ManageInventory />} />
+          </Route>
+          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+            <Route path="admin" element={<Admin />} />
+          </Route>
+        </Route>
       </Route>
     )
 );

@@ -1,6 +1,7 @@
 
 import click
 from api.models import db, User
+from werkzeug.security import generate_password_hash
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -21,8 +22,9 @@ def setup_commands(app):
         for x in range(1, int(count) + 1):
             user = User()
             user.email = "test_user" + str(x) + "@test.com"
-            user.password = "123456"
+            user.password = generate_password_hash("12345678")
             user.is_active = True
+            user.status = "approved"
             db.session.add(user)
             db.session.commit()
             print("User: ", user.email, " created.")
@@ -32,3 +34,28 @@ def setup_commands(app):
     @app.cli.command("insert-test-data")
     def insert_test_data():
         pass
+
+    @app.cli.command("seed-admin")
+    def seed_admin():
+        import os
+
+        email = os.getenv("ADMIN_EMAIL", "").strip().lower()
+        password = os.getenv("ADMIN_PASSWORD", "")
+        if not email or len(password) < 8:
+            raise click.ClickException("Configura ADMIN_EMAIL y ADMIN_PASSWORD (mínimo 8 caracteres).")
+        admin = User.query.filter_by(email=email).first()
+        if admin:
+            admin.role = "admin"
+            admin.status = "approved"
+            admin.is_active = True
+            admin.password = generate_password_hash(password)
+        else:
+            db.session.add(User(
+                email=email,
+                password=generate_password_hash(password),
+                role="admin",
+                status="approved",
+                is_active=True,
+            ))
+        db.session.commit()
+        click.echo("Cuenta de administrador inicializada.")
