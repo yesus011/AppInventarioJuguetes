@@ -74,7 +74,7 @@ El proyecto incluye un frontend React con rutas protegidas y una API Flask con J
 2. Instala las dependencias de Python y JavaScript: `pipenv install` y `npm install`.
 3. Aplica la migración: `pipenv run flask --app src/app.py db upgrade`.
 4. Crea o actualiza la cuenta administradora: `pipenv run flask --app src/app.py seed-admin`.
-5. Inicia el backend con `pipenv run start` y, en otra terminal, el frontend con `npm run start`.
+5. Inicia el backend con `pipenv run start` y, en otra terminal, el frontend con `npm run dev`.
 
 En desarrollo, Vite reenvía `/api` a `http://localhost:3001`. En otro despliegue, define `VITE_BACKEND_URL` como la URL base de la API. El JWT del frontend se conserva en `sessionStorage` durante la pestaña actual; para despliegues con requisitos de seguridad más estrictos, conviene migrar a cookies `HttpOnly` y protección CSRF.
 
@@ -91,7 +91,7 @@ src/front/pages/                  Login, registro, administración e inventario
 src/front/lib/api.js              Cliente HTTP con bearer token
 ```
 
-Los registros públicos quedan pendientes hasta que el administrador los apruebe. Los artículos guardan descripción, marca, tipo de juguete, edad recomendada, observaciones, cantidad, URL de foto y condición. El catálogo se puede filtrar por marca, tipo y edad. Cada salida registra destino, fecha, cantidad y observaciones, descontándola en la misma transacción de base de datos. Desde el historial se puede imprimir una planilla vertical por salida con espacios para las firmas de entrega y recepción.
+Los registros públicos quedan pendientes hasta que el administrador los apruebe. Los artículos tienen descripción, cantidad, URL de foto y condición; cada salida registra destino, fecha y cantidad, descontándola en la misma transacción de base de datos.
 
 ### Instalación manual del Front-End:
 

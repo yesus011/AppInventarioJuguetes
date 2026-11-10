@@ -86,28 +86,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .panel-icon-lime { background: #d8ef72; color: #25352d; }
 .form-stack { display: grid; gap: 15px; }
 .form-stack label { display: grid; gap: 7px; color: #4b5a50; font-size: 11px; font-weight: 700; }
-.form-stack input, .form-stack select, .form-stack textarea { width: 100%; min-width: 0; min-height: 42px; padding: 0 11px; color: #24342b; background: #fff; border: 1px solid #dce2d8; border-radius: 5px; font-size: 12px; }
-.form-stack textarea { padding: 10px 11px; resize: vertical; }
+.form-stack input, .form-stack select { width: 100%; min-width: 0; height: 42px; padding: 0 11px; color: #24342b; background: #fff; border: 1px solid #dce2d8; border-radius: 5px; font-size: 12px; }
 .form-stack input::placeholder { color: #a0aaa1; }
 .form-stack small, .optional-label { color: #89948b; font-size: 10px; font-weight: 400; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
 .stock-adjust-section { margin-top: 25px; }
-.inventory-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 15px; }
-.inventory-filters label { display: grid; gap: 6px; color: #4b5a50; font-size: 11px; font-weight: 700; }
-.inventory-filters select { width: 100%; min-width: 0; height: 38px; padding: 0 9px; color: #24342b; background: #fff; border: 1px solid #dce2d8; border-radius: 5px; font-size: 12px; }
-.table-notes { max-width: 230px; white-space: normal !important; }
-.print-button { display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; color: #344a39; background: #eff3e8; border: 0; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
-.print-button:hover { background: #e2ebd5; }
-.print-sheet { display: none; }
-.print-sheet h1 { margin: 0 0 8px; font: 700 22px 'Space Grotesk', sans-serif; text-align: center; }
-.print-date { margin: 0 0 20px; font-size: 12px; }
-.print-sheet table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.print-sheet th, .print-sheet td { padding: 9px 7px; border: 1px solid #333; text-align: left; vertical-align: top; }
-.print-sheet th { font-weight: 700; }
-.print-signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 88px; font-size: 11px; }
-.print-signatures h2 { margin: 0 0 20px; font-size: 13px; text-transform: uppercase; }
-.print-signatures p { margin: 0 0 16px; }
-.signature-line { width: 80%; margin: 42px auto 0; padding-top: 5px; border-top: 1px solid #333; text-align: center; }
 .adjust-controls { display: flex; gap: 5px; }
 .adjust-button { width: 30px; height: 30px; display: inline-grid; place-items: center; border: 1px solid #dfe4db; border-radius: 5px; color: #536c59; background: #fff; cursor: pointer; }
 .adjust-button:hover:not(:disabled) { background: #eff4e8; }
@@ -173,7 +156,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 	.data-section { margin-top: 16px; padding: 16px 13px 2px; }
 	.section-heading h2 { font-size: 17px; }
 	.data-table { min-width: 520px; }
-	.inventory-filters { grid-template-columns: 1fr; gap: 8px; }
 	.manage-grid { grid-template-columns: 1fr; gap: 12px; }
 	.form-panel { padding: 17px 15px; }
 	.auth-page { width: calc(100% - 24px); margin: 15px auto 30px; }
@@ -186,14 +168,4 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 	.admin-actions { gap: 3px; }
 	.admin-actions button { padding: 0 6px; }
 	.register-page .auth-intro { min-height: 230px; }
-}
-
-@page { size: A4 portrait; margin: 16mm; }
-@media print {
-	body { min-width: 0; background: #fff; }
-	.app-frame > :not(.content-wrap), .content-wrap > :not(.print-sheet) { display: none !important; }
-	.content-wrap { display: block; width: 100%; margin: 0; padding: 0; animation: none; }
-	.print-sheet { display: block !important; color: #111; font-family: Arial, sans-serif; }
-	.print-sheet h1 { font-family: Arial, sans-serif; }
-	.print-sheet tr { break-inside: avoid; }
 }

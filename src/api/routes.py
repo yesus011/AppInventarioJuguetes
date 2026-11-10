@@ -132,36 +132,18 @@ def list_inventory():
 @approved_required
 def create_inventory_item():
     data = request.get_json(silent=True) or {}
-    description = data.get("description", "")
-    condition = data.get("condition", "")
+    description = data.get("description", "").strip()
+    condition = data.get("condition", "").strip()
     quantity = data.get("quantity")
-    if not isinstance(description, str) or not description.strip():
-        return jsonify({"message": "La descripción es obligatoria"}), 400
-    if not isinstance(condition, str) or condition.strip() not in ("Nuevo", "Usado", "Dañado"):
+    if not description or condition not in ("Nuevo", "Usado", "Dañado"):
         return jsonify({"message": "Descripción y condición válida son obligatorias"}), 400
     if not isinstance(quantity, int) or quantity < 0:
         return jsonify({"message": "La cantidad debe ser un entero no negativo"}), 400
-
-    optional_fields = {}
-    for field, label, max_length in (
-        ("brand", "marca", 100),
-        ("toy_type", "tipo de juguete", 100),
-        ("age", "edad", 50),
-        ("observations", "observaciones", 2000),
-    ):
-        value = data.get(field, "")
-        if value is None:
-            value = ""
-        if not isinstance(value, str) or len(value) > max_length:
-            return jsonify({"message": f"El campo {label} no es válido"}), 400
-        optional_fields[field] = value.strip() or None
-
     item = InventoryItem(
-        description=description.strip(),
-        **optional_fields,
+        description=description,
         quantity=quantity,
         image_url=data.get("image_url"),
-        condition=condition.strip(),
+        condition=condition,
     )
     db.session.add(item)
     db.session.commit()
@@ -196,22 +178,16 @@ def create_inventory_exit():
         return jsonify({"message": "Artículo inválido"}), 400
     item = InventoryItem.query.filter_by(id=item_id).with_for_update().first_or_404()
     quantity = data.get("quantity")
-    destination = data.get("destination", "")
-    observations = data.get("observations", "")
-    if observations is None:
-        observations = ""
-    if type(quantity) is not int or quantity <= 0 or not isinstance(destination, str) or not destination.strip():
+    destination = data.get("destination", "").strip()
+    if type(quantity) is not int or quantity <= 0 or not destination:
         return jsonify({"message": "Destino y cantidad positiva son obligatorios"}), 400
-    if not isinstance(observations, str) or len(observations) > 2000:
-        return jsonify({"message": "Las observaciones no son válidas"}), 400
     if quantity > item.quantity:
         return jsonify({"message": "No hay cantidad suficiente en inventario"}), 409
 
     item.quantity -= quantity
     entry = InventoryExit(
         item_id=item.id,
-        destination=destination.strip(),
-        observations=observations.strip() or None,
+        destination=destination,
         exit_date=exit_date,
         quantity=quantity,
         created_by=int(get_jwt_identity()),
