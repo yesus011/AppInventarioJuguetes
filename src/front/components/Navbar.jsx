@@ -17,7 +17,7 @@ export const Navbar = () => {
 				{user ? (
 					<div className="nav-session">
 						<NavLink to="/inventory" className={linkClass}><Boxes size={16} />Inventario</NavLink>
-						<NavLink to="/inventory/manage" className={linkClass}><ClipboardList size={16} />Movimientos</NavLink>
+						{["admin", "inventory_manager", "inventory_editor"].includes(user.role) && <NavLink to="/inventory/manage" className={linkClass}><ClipboardList size={16} />Movimientos</NavLink>}
 						{user.role === "admin" && <NavLink to="/admin" className={linkClass}><ShieldCheck size={16} />Administración</NavLink>}
 						<span className="nav-email">{user.email}</span>
 						<button className="icon-button" title="Cerrar sesión" aria-label="Cerrar sesión" onClick={() => { logout(); navigate("/login"); }}><LogOut size={17} /></button>

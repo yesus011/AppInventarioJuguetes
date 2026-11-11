@@ -91,7 +91,7 @@ src/front/pages/                  Login, registro, administración e inventario
 src/front/lib/api.js              Cliente HTTP con bearer token
 ```
 
-Los registros públicos quedan pendientes hasta que el administrador los apruebe. Los artículos tienen descripción, cantidad, URL de foto y condición; cada salida registra destino, fecha y cantidad, descontándola en la misma transacción de base de datos.
+Los registros públicos quedan pendientes hasta que el administrador los apruebe y les asigne uno de los roles de inventario. El rol «Consulta y agrega» permite ver el inventario y agregar artículos, pero no registrar salidas ni descontar existencias. El rol «Registra salidas y agrega» permite además registrar salidas y ajustar existencias. Solo el administrador puede asignar estos roles. Desde el inicio de sesión, una persona puede solicitar la recuperación de su contraseña; el administrador genera una contraseña aleatoria, que se muestra una sola vez y debe entregarse por un canal seguro. El cambio invalida las sesiones anteriores. Los artículos incluyen descripción, marca, edad recomendada, cantidad, URL de foto y condición; el inventario se puede filtrar por marca, condición y edad. Cada salida registra destino, fecha, cantidad y observaciones, descontándola en la misma transacción de base de datos. Al registrar una salida se puede imprimir su planilla de entrega y también volver a imprimirla desde el historial.
 
 ### Instalación manual del Front-End:
 

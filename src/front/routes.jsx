@@ -29,7 +29,7 @@ export const router = createBrowserRouter(
         <Route path="register" element={<Register />} />
         <Route element={<ProtectedRoute />}>
           <Route path="inventory" element={<Inventory />} />
-          <Route element={<ProtectedRoute allowedRoles={["admin", "user"]} />}>
+          <Route element={<ProtectedRoute allowedRoles={["admin", "inventory_manager", "inventory_editor"]} />}>
             <Route path="inventory/manage" element={<ManageInventory />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
